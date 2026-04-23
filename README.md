@@ -111,6 +111,12 @@ Checkout the full documentation [here](https://shopify.github.io/react-native-sk
    </Canvas>
 ```
 
+## ScreenShot
+
+<img src="https://images.ctfassets.net/0krlnipf2sxy/3O2g7QV5PC2h6ZGuhof9Z4/60c75c21735e4096689a9ab3900c8c1f/130-80-40.png" width="400" alt="Deskripsi Gambar">
+<img src="https://images.ctfassets.net/0krlnipf2sxy/5CuIeaHXnFEiht3GXhDag3/b25e539c2f754a29f25c1961add3bb58/80-10-100.png" width="400" alt="Deskripsi Gambar">
+<img src="https://images.ctfassets.net/0krlnipf2sxy/5fqW6dIzGSlVOkCcwNCYtv/f60dc8ca04936440349dee1c67603fee/130-80-100.png" width="400" alt="Deskripsi Gambar">
+
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
