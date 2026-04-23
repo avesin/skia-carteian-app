@@ -41,6 +41,52 @@ React Native Skia brings the Skia Graphics Library to React Native. Skia serves 
 
 Checkout the full documentation [here](https://shopify.github.io/react-native-skia).
 
+```typescript
+  const handleGenerate = useCallback(() => {
+    closeSheet();
+    setPath(Skia.Path.Make());
+
+    progress.value = 0;
+    requestAnimationFrame(() => {
+      const pts = generatePoints();
+      const newPath = createPath(pts);
+      setPath(newPath);
+      progress.value = withTiming(1, { duration: pts.length * 4 });
+    })
+  }, [MAP_SIZE]);
+
+```
+
+```reach native
+     <Canvas style={{ width: MAP_SIZE, height: MAP_SIZE }}>
+         <Path
+            path={path}
+            color="#00fbff"
+            style="stroke"
+            strokeWidth={5}
+            antiAlias
+            start={0}
+            end={progress}
+         />
+      </Canvas>
+
+```
+
+```reach native
+     <Canvas style={{ width: MAP_SIZE, height: MAP_SIZE }}>
+         <Path
+            path={path}
+            color="#00fbff"
+            style="stroke"
+            strokeWidth={5}
+            antiAlias
+            start={0}
+            end={progress}
+         />
+      </Canvas>
+
+```
+
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
