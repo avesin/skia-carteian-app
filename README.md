@@ -35,6 +35,12 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
+## Library Skia
+
+React Native Skia brings the Skia Graphics Library to React Native. Skia serves as the graphics engine for Google Chrome and Chrome OS, Android, Flutter, Mozilla Firefox and Firefox OS, and many other products.
+
+For detailed information on library development, building, testing, and contributing guidelines, please see [CONTRIBUTING.md](packages/skia/CONTRIBUTING.md).
+
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
