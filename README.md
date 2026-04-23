@@ -39,7 +39,7 @@ This command will move the starter code to the **app-example** directory and cre
 
 React Native Skia brings the Skia Graphics Library to React Native. Skia serves as the graphics engine for Google Chrome and Chrome OS, Android, Flutter, Mozilla Firefox and Firefox OS, and many other products.
 
-For detailed information on library development, building, testing, and contributing guidelines, please see [CONTRIBUTING.md](packages/skia/CONTRIBUTING.md).
+Checkout the full documentation [here](https://shopify.github.io/react-native-skia).
 
 ## Learn more
 
