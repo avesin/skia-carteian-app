@@ -112,10 +112,19 @@ Checkout the full documentation [here](https://shopify.github.io/react-native-sk
 ```
 
 ## ScreenShot
-
-<img src="https://images.ctfassets.net/0krlnipf2sxy/3O2g7QV5PC2h6ZGuhof9Z4/60c75c21735e4096689a9ab3900c8c1f/130-80-40.png" width="400" alt="Deskripsi Gambar">
-<img src="https://images.ctfassets.net/0krlnipf2sxy/5CuIeaHXnFEiht3GXhDag3/b25e539c2f754a29f25c1961add3bb58/80-10-100.png" width="400" alt="Deskripsi Gambar">
-<img src="https://images.ctfassets.net/0krlnipf2sxy/5fqW6dIzGSlVOkCcwNCYtv/f60dc8ca04936440349dee1c67603fee/130-80-100.png" width="400" alt="Deskripsi Gambar">
+<table align="center" border="0" cellpadding="0" cellspacing="0">
+   <tr>
+      <td align="center">
+         <img src="https://images.ctfassets.net/0krlnipf2sxy/3O2g7QV5PC2h6ZGuhof9Z4/60c75c21735e4096689a9ab3900c8c1f/130-80-40.png" width="400" alt="Deskripsi Gambar">
+      </td>
+      <td align="center">
+         <img src="https://images.ctfassets.net/0krlnipf2sxy/5CuIeaHXnFEiht3GXhDag3/b25e539c2f754a29f25c1961add3bb58/80-10-100.png" width="400" alt="Deskripsi Gambar">
+      </td>
+      <td align="center">
+         <img src="https://images.ctfassets.net/0krlnipf2sxy/5fqW6dIzGSlVOkCcwNCYtv/f60dc8ca04936440349dee1c67603fee/130-80-100.png" width="400" alt="Deskripsi Gambar">
+      </td>
+   </tr>
+</table>
 
 ## Learn more
 
