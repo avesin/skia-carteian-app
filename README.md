@@ -72,21 +72,6 @@ Checkout the full documentation [here](https://shopify.github.io/react-native-sk
 
 ```
 
-```reach native
-     <Canvas style={{ width: MAP_SIZE, height: MAP_SIZE }}>
-         <Path
-            path={path}
-            color="#00fbff"
-            style="stroke"
-            strokeWidth={5}
-            antiAlias
-            start={0}
-            end={progress}
-         />
-      </Canvas>
-
-```
-
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
