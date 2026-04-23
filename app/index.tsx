@@ -2,19 +2,19 @@ import { Octicons } from '@expo/vector-icons';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import { evaluate } from 'mathjs';
 import { useCallback, useEffect, useState } from 'react';
-import { Dimensions, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, AlertButton, Dimensions, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import CartesianGraph from './cartesian_graph';
+import evaluateParams from './functions';
 
 
 const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get('window');
 const MAP_SIZE = 1000;
 
 export default function Index() {
-  const [textSatu, setTextSatu] = useState('Y');
-  const [textDua, setTextDua] = useState('');
+  const [form, setForm] = useState([] as any);
+  const [rumus, setRumus] = useState(evaluateParams[0]);
   const [path, setPath] = useState(Skia.Path.Make());
   const scale = useSharedValue(1);
   const savedScale = useSharedValue(1);
@@ -25,7 +25,7 @@ export default function Index() {
   const translateYSheet = useSharedValue(WINDOW_HEIGHT + 20);
   const keyboard = useSharedValue(0);
   const insets = useSafeAreaInsets();
-  const factor = 0.5;
+  const factor = 0.4;
   const progress = useSharedValue(0);
 
   const pinchGesture = Gesture.Pinch()
@@ -82,6 +82,24 @@ export default function Index() {
     translateYSheet.value = withTiming((WINDOW_HEIGHT * factor));
   };
 
+  var options: AlertButton[] = []
+  evaluateParams.forEach((param) => {
+    options.push({
+      text: `${param.label} :: ${param.funcation}`, onPress: () => {
+        setRumus(param);
+        openSheet();
+      }
+    })
+  });
+
+  const openOptions = () => {
+    Alert.alert(
+      "Pilih Rumus",
+      "Pilih salah satu di bawah ini:",
+      options
+    );
+  }
+
   const closeSheet = () => {
     Keyboard.dismiss();
     translateYSheet.value = withTiming(WINDOW_HEIGHT + 20);
@@ -93,9 +111,9 @@ export default function Index() {
 
   const generatePoints = () => {
     const points: { x: number; y: number }[] = [];
-    const R = 290;
-    const r = 20;
-    const d = 30;
+    const R = 50;
+    const r = 30;
+    const d = 50;
     const x = (t: number) =>
       evaluate(
         `(R - r) * cos(t) + d * cos(((R - r) / r) * t)`,
@@ -131,6 +149,19 @@ export default function Index() {
     })
   }, [MAP_SIZE]);
 
+  const handleGenerateWithParams = useCallback(() => {
+    closeSheet();
+    setPath(Skia.Path.Make());
+
+    progress.value = 0;
+    requestAnimationFrame(() => {
+      const pts = rumus.evaluate(form, MAP_SIZE, MAP_SIZE, 0.02);
+      const newPath = createPath(pts);
+      setPath(newPath);
+      progress.value = withTiming(1, { duration: pts.length * 4 });
+    })
+  }, [MAP_SIZE, form]);
+
   const createPath = (points: { x: number; y: number }[] = []) => {
     const path = Skia.Path.Make();
     if (points.length === 0) return path;
@@ -156,7 +187,7 @@ export default function Index() {
       <View style={styles.container}>
         <GestureDetector gesture={composed}>
           <Animated.View style={[styles.viewport, animatedStyle]}>
-            <CartesianGraph />
+            {/* <CartesianGraph /> */}
             <Canvas style={{ width: MAP_SIZE, height: MAP_SIZE }}>
               <Path
                 path={path}
@@ -170,7 +201,7 @@ export default function Index() {
             </Canvas>
           </Animated.View>
         </GestureDetector>
-        <TouchableOpacity style={styles.floatingButton} onPress={openSheet}>
+        <TouchableOpacity style={styles.floatingButton} onPress={openOptions}>
           <Octicons name="diff-added" size={24} color="white" />
         </TouchableOpacity>
       </View>
@@ -179,30 +210,30 @@ export default function Index() {
         <TouchableOpacity style={styles.closeButton} onPress={closeSheet}>
           <Octicons name="x" size={20} color="white" />
         </TouchableOpacity>
-        <View style={styles.row}>
-          <TextInput
-            returnKeyType="next"
-            numberOfLines={1}
-            style={styles.input}
-            placeholder="Type something..."
-            value={textSatu}
-            onChangeText={setTextSatu}
-          />
-          <Text style={styles.label}>=</Text>
-          <TextInput
-            returnKeyType="done"
-            numberOfLines={1}
-            style={styles.input}
-            placeholder="Type something..."
-            value={textDua}
-            onChangeText={setTextDua}
-          />
-        </View>
-        <TouchableOpacity style={{ ...styles.button, marginTop: 64 }} onPress={handleGenerate}>
-          <Text style={styles.text}>GENERATED</Text>
+        <Text style={styles.text}>{rumus.label}:</Text>
+        <Text style={styles.text}></Text>
+        <Text style={styles.text}>{rumus.funcation}:</Text>
+        <Text style={styles.text}></Text>
+        {rumus.params.map((key) => (
+          <View key={key} style={styles.column}>
+            <Text style={styles.label}>{key}:</Text>
+            <TextInput
+              keyboardType="numeric"
+              numberOfLines={1}
+              style={styles.input}
+              placeholder="0-9 only"
+              value={form[key]}
+              onChangeText={(text) => {
+                const numericValue = text.replace(/[^0-9]/g, '');
+                setForm({ ...form, [key]: numericValue })
+              }}
+            />
+          </View>))}
+        < TouchableOpacity style={{ ...styles.button, marginTop: 32 }} onPress={handleGenerateWithParams}>
+          <Text style={[styles.text, { color: 'white' }]}>GENERATED</Text>
         </TouchableOpacity>
       </Animated.View>
-    </GestureHandlerRootView>
+    </GestureHandlerRootView >
   );
 }
 
@@ -237,7 +268,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   sheet: {
-    padding: 20,
+    padding: 16,
     position: 'absolute',
     top: 0,
     height: WINDOW_HEIGHT,
@@ -247,12 +278,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   handle: {
-    marginBottom: 32,
+    marginBottom: 16,
     width: 40,
     height: 5,
     backgroundColor: '#ccc',
     alignSelf: 'center',
-    marginVertical: 10,
+    marginVertical: 8,
     borderRadius: 3,
   },
   input: {
@@ -262,13 +293,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    padding: 24
+    padding: 16
   },
   row: {
     alignItems: 'center',
     flexDirection: 'column',
   },
+  column: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 8,
+  },
   label: {
+    width: 30,
     fontSize: 24,
     fontWeight: 'bold',
     marginHorizontal: 10,
@@ -277,11 +314,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     padding: 16,
     borderRadius: 8,
-    marginTop: 16,
+    marginTop: 8,
   },
   text: {
     textAlign: 'center',
-    color: 'white',
+    color: '#121212',
     fontWeight: 'bold',
     fontSize: 16,
   },

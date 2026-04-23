@@ -1,14 +1,14 @@
 interface EvaluateParams {
     label: string;
     funcation: string;
-    params: any;
+    params: string[];
     evaluate(params: any, w: number, h: number, step: number): { x: number; y: number }[]
 }
 
 const hypotrochoid: EvaluateParams = {
     label: 'Hypotrochoid',
     funcation: `(R - r) * cos(t) + d * cos(((R - r) / r) * t)`,
-    params: { R: 100, r: 50, d: 30 },
+    params: ['R', 'r', 'd'],
     evaluate: ({ R, r, d }, w, h,  step = 0.02) => {
         const points: { x: number; y: number }[] = [];
         const maxT = Math.PI * 20;
@@ -34,8 +34,8 @@ const hypotrochoid: EvaluateParams = {
 const lissajous: EvaluateParams = {
     label: 'Lissajous',
     funcation: `A * sin(a * t + delta)`,
-    params: { A: 100, B: 100, a: 3, b: 2, delta: Math.PI / 2 },
-    evaluate: ({ A, B, a, b, delta }, w, h, step = 0.02) => {
+    params: ['A', 'B', 'a', 'b'],
+    evaluate: ({ A, B, a, b }, w, h, delta = Math.PI / 2, step = 0.02) => {
         const points: { x: number; y: number }[] = [];
         const maxT = Math.PI * 20;
 
@@ -55,7 +55,7 @@ const lissajous: EvaluateParams = {
 const rose: EvaluateParams = {
     label: 'Rose',
     funcation: `d * cos(k * t)`,
-    params: { k: 5, d: 100 },
+    params: ['k', 'd'],
     evaluate: ({ k, d }, w, h, step = 0.02) => {
         const points: { x: number; y: number }[] = [];
         const maxT = Math.PI * 20;
@@ -76,8 +76,8 @@ const rose: EvaluateParams = {
 
 const cartesian: EvaluateParams = {
     label: 'Cartesian',
-    funcation: `A * cos(a * t)`,
-    params: { A: 100, B: 100, a: 3, b: 2 },
+    funcation: `A * cos(a * t) :: B * cos(b * t)`,
+    params: ['A', 'B', 'a', 'b'],
     evaluate: ({ A, B, a, b }, w, h, step = 0.02) => {
         const points: { x: number; y: number }[] = [];
         const maxT = Math.PI * 20;
@@ -96,3 +96,4 @@ const cartesian: EvaluateParams = {
 }
 
 export default [hypotrochoid, lissajous, rose, cartesian] as EvaluateParams[];
+export type { EvaluateParams };

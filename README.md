@@ -42,6 +42,47 @@ React Native Skia brings the Skia Graphics Library to React Native. Skia serves 
 Checkout the full documentation [here](https://shopify.github.io/react-native-skia).
 
 ```typescript
+  const generatePoints = () => {
+    const points: { x: number; y: number }[] = [];
+    const R = 290;
+    const r = 20;
+    const d = 30;
+    const x = (t: number) =>
+      evaluate(
+        `(R - r) * cos(t) + d * cos(((R - r) / r) * t)`,
+        { R, r, d, t }
+      );
+    const y = (t: number) =>
+      evaluate(
+        `(R - r) * sin(t) - d * sin(((R - r) / r) * t)`,
+        { R, r, d, t }
+      );
+    const maxT = Math.PI * 20;
+    const step = 0.02;
+
+    for (let t = 0; t < maxT; t += step) {
+      points.push({
+        x: x(t) + (MAP_SIZE / 2),
+        y: y(t) + (MAP_SIZE / 2),
+      });
+    }
+    return points;
+  }
+```
+
+```typescript
+   const createPath = (points: { x: number; y: number }[] = []) => {
+    const path = Skia.Path.Make();
+    if (points.length === 0) return path;
+    path.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      path.lineTo(points[i].x, points[i].y);
+    }
+    return path;
+  };
+```
+
+```typescript
   const handleGenerate = useCallback(() => {
     closeSheet();
     setPath(Skia.Path.Make());
@@ -54,22 +95,20 @@ Checkout the full documentation [here](https://shopify.github.io/react-native-sk
       progress.value = withTiming(1, { duration: pts.length * 4 });
     })
   }, [MAP_SIZE]);
-
 ```
 
 ```reach native
-     <Canvas style={{ width: MAP_SIZE, height: MAP_SIZE }}>
-         <Path
-            path={path}
-            color="#00fbff"
-            style="stroke"
-            strokeWidth={5}
-            antiAlias
-            start={0}
-            end={progress}
-         />
-      </Canvas>
-
+   <Canvas style={{ width: MAP_SIZE, height: MAP_SIZE }}>
+      <Path
+         path={path}
+         color="#00fbff"
+         style="stroke"
+         strokeWidth={5}
+         antiAlias
+         start={0}
+         end={progress}
+      />
+   </Canvas>
 ```
 
 ## Learn more
